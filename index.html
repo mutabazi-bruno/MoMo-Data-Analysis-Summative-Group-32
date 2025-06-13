@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> MOMO SMS Transaction Dashboard</title>
+    <link rel="icon" type="image/png" href="./Assets/New-mtn-logo.jpg">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <div class="hlogo">
+        <img src="./Assets/New-mtn-logo.jpg" alt="MTN Logo">
+    </div>
+    
+    <div class="container">
+        <header class="header">
+            <h1>SMS Transaction Dashboard</h1>
+            <p>MTN MoMo Data Analysis</p>
+        </header>
+
+        <nav class="nav">
+            <div class="nav-item active" data-view="overview">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Overview</span>
+            </div>
+            <div class="nav-item" data-view="transactions">
+                <span class="nav-icon">💳</span>
+                <span class="nav-text">Transactions</span>
+            </div>
+            <div class="nav-item" data-view="analytics">
+                <span class="nav-icon">📈</span>
+                <span class="nav-text">Analytics</span>
+            </div>
+        </nav>
+
+        <!-- overview Section -->
+
+        <div id="overview" class="view active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <h3>Total Transactions</h3>
+                    <div class="stat-value" id="totalTxn">1,247</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <h3>Balance</h3>
+                    <div class="stat-value" id="totalVolume">45.2M RWF</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <h3>Most Active Month</h3>
+                    <div class="stat-value" id="activeMonth">March 2024</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <h3>Top Category</h3>
+                    <div class="stat-value" id="topCategory">Money Transfer</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>Transaction Types</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="typeChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h3>Monthly Volume</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction Section -->
+         
+        <div id="transactions" class="view">
+            <div class="section-header">
+                <h2>Transaction History</h2>
+                <p>View and filter your transaction history</p>
+            </div>
+            
+            <div class="filters">
+
+                <div class="filter-group">
+
+                    <label for="searchInput">Search</label>
+
+                    <input type="text" id="searchInput" placeholder="Search transactions...">
+                </div>
+
+                <div class="filter-group">
+
+                    <label for="typeFilter">Type</label>
+
+                    <select id="typeFilter">
+
+                        <option value="">All Types</option>
+                        
+                        <option value="incoming">Incoming Money</option>
+                        <option value="payment">Payments</option>
+                        <option value="transfer">Transfers</option>
+                        <option value="withdrawal">Withdrawals</option>
+                        <option value="airtime">Airtime</option>
+                        <option value="bundle">Data Bundle</option>
+
+                    </select>
+                </div>
+
+                <div class="filter-group">
+
+                    <label for="dateFilter">.Date</label>
+                    <input type="date" id="dateFilter">
+
+                </div>
+
+            </div>
+
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table id="transactionTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionBody">
+
+                            <!-- dynamic content will be inserted here -->
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <button id="prevBtn" class="pagination-btn">
+                    <span class="btn-icon">←</span>
+                    <span class="btn-text">Previous</span>
+                </button>
+                <span id="pageInfo">Page 1 of 10</span>
+                <button id="nextBtn" class="pagination-btn">
+                    <span class="btn-text">Next</span>
+                    <span class="btn-icon">→</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- analytics Sectioon -->
+
+        <div id="analytics" class="view">
+            <div class="section-header">
+                <h2>Advanced Analytics</h2>
+                <p>Detailed insights into your transaction patterns</p>
+            </div>
+            
+            <div class="analytics-grid">
+                <div class="chart-container full-width">
+                    <h3>Daily Transaction Trends</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="trendsChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h3>Payment Distribution</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h3>Agent Performance</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="agentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- detail Modal -->
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Transaction Details</h2>
+                <div id="modalBody">
+                    
+                    <!-- dynamic content will be inserted here -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Footer -->
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="./Assets/New-mtn-logo.jpg" alt="MTN Logo">
+                        <h3>MTN MoMo</h3>
+                    </div>
+                    <p class="footer-description">
+                        Your trusted mobile money solution for secure and convenient transactions across Rwanda.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="tel:*182#">*182# - Quick USSD</a></li>
+                        <li><a href="tel: 100">100 </a></li>
+                        <li><a href="https://www.mtn.co.rw/contact-us/">support@mtn.rw</a></li>
+                        <li><a href="https://www.mtn.co.rw/helppersonal/faqs-for-the-virtual-card-by-momo/">FAQ & Help Center</a></li>
+                    </ul>
+                </div>
+
+                
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <div class="copyright">
+                        <p>&copy; 2025 MTN Rwanda. All rights reserved.</p>
+                        <p class="footer-tagline">Everywhere you go</p>
+                    </div>
+                    <div class="footer-legal">
+                        <a href="https://www.mtn.co.rw/data-protection-and-privacy-notice/">Privacy Policy</a>
+                        <a href="https://www.mtn.co.rw/oldmtn22/wp-content/uploads/2023/06/20230612-MOMO-ADVANCE-TERMS-CONDITIONS.pdf">Terms of Service</a>
+                        <a href="https://www.mtn.co.rw/careers/specialist-aml-compliance/">Compliance</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="data.js"></script>
+    <script src="charts.js"></script>
+    <script src="app.js"></script>
+    
+    <script>
+    window.addEventListener('load', function() {
+        if (typeof Chart !== 'undefined') {
+            console.log('Chart.js loaded successfully');
+            if (typeof SMSDashboard !== 'undefined') {
+                dashboard = new SMSDashboard();
+            }
+        } else {
+            console.error('Chart.js failed to load');
+        }
+    });
+    </script>
+</body>
+</html>

@@ -6,43 +6,43 @@ from datetime import datetime
 def categorize_of_message(message):
     msg = message.lower()  
 
-    if "you have received" in msg and "from" in msg:
+    if "You have received" in msg and "from" in msg:
 
         return "Incoming Money"
     
-    elif "your payment of" in msg and "to" in msg:
+    elif "Your payment of" in msg and "to" in msg:
 
         return "Payments to Code Holders"
     
-    elif "withdrawn" in msg and "agent" in msg:
+    elif "Withdrawn" in msg and "agent" in msg:
 
         return "Withdrawals from Agents"
     
-    elif "bank deposit" in msg:
+    elif "Bank deposit" in msg:
 
         return "Bank Deposits"
     
-    elif "airtime" in msg:
+    elif "Airtime" in msg:
 
         return "Airtime Bill Payments"
     
-    elif "cash power" in msg:
+    elif "Cash power" in msg:
 
         return "Cash Power Bill Payments"
     
-    elif "purchased an internet bundle" in msg or "voice bundle" in msg:
+    elif "Purchased an internet bundle" in msg or "voice bundle" in msg:
 
         return "Internet and Voice Bundle Purchases"
     
-    elif "third party" in msg:
+    elif "Third party" in msg:
 
         return "Transactions by Third Parties"
     
-    elif "bank transfer" in msg:
+    elif "Bank transfer" in msg:
 
         return "Bank Transfers"
     
-    elif "transfer to" in msg or "sent to" in msg:
+    elif "Transfer to" in msg or "sent to" in msg:
 
         return "Transfers to Mobile Numbers"
     

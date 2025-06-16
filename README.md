@@ -35,9 +35,13 @@ pip install -r backend/requirements.txt
 1. Start Flask API Server
 bash:
 install python if you don't have it download it from python.org 
+
 install Flask : pip install flask if you don't have it 
+
 run momo.py file
+
 run api.py 
+
 then use liveserver to see it in the browser or copy the path for index.html file then paste it in the browser
 
 API Endpoints:
@@ -119,7 +123,10 @@ Name    Role    Key Contributions<br>
 Heroine  Backend Engineer    Flask API, data processing
 
 Bruno&Anitha    Frontend Developer  Dashboard UI, Chart.js integration
+
+
 Maxime Database Architect  Schema design, query optimization
+
 📽️ Video Walkthrough
 https://www.loom.com/share/7632c4d81ca648e1a78881b756f7f688?sid=89a12441-9e53-40c7-8ee7-ba3974732503
 

@@ -67,7 +67,7 @@ def generate_message_hash(message):
     """Generate a unique hash for the message content"""
     return hashlib.md5(message.encode('utf-8')).hexdigest()
 
-# Create DB and table if not exists (database_startup.py also create database we created it before knowing this function that why we kept for easy understanding )
+# Create DB and table if is not exists (database_startup.py also create database we created it before knowing this function that why we kept for easy understanding )
 
 def create_db():
     db_path = os.path.join(BASE_DIR, "mobilemoney.db")

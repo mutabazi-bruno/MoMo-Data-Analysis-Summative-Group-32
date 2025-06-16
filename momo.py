@@ -134,4 +134,4 @@ def process_sms(xml_filename):
 
 if __name__ == "__main__":
     create_db()
-    process_sms("D:\HTML LG\MOMO\MoMo-Data-Analysis-Summative-Group-32\modified_sms_v2.xml")
+    process_sms("modified_sms_v2.xml")

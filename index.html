@@ -38,27 +38,30 @@
 
         <div id="overview" class="view active">
             <div class="stats-grid">
-                <div class="stat-card">
+                  <div class="stat-card">
                     <div class="stat-icon">📊</div>
-                    <h3>Total Transactions</h3>
-                    <div class="stat-value" id="totalTxn">1,247</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">💰</div>
-                    <h3>Balance</h3>
-                    <div class="stat-value" id="totalVolume">45.2M RWF</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📅</div>
-                    <h3>Most Active Month</h3>
-                    <div class="stat-value" id="activeMonth">March 2024</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🏆</div>
-                    <h3>Top Category</h3>
-                    <div class="stat-value" id="topCategory">Money Transfer</div>
-                </div>
-            </div>
+                         <h3>Total Transactions</h3>
+                           <div class="stat-value" id="totalTxn">0</div>
+                     </div>
+
+                       <div class="stat-card">
+                       <div class="stat-icon">💰</div>
+                       <h3>Balance</h3>
+                        <div class="stat-value" id="totalVolume">0 RWF</div>
+                         </div>
+
+                      <div class="stat-card">
+                      <div class="stat-icon">📅</div>
+                         <h3>Most Active Month</h3>
+                       <div class="stat-value" id="activeMonth">-</div>
+                         </div>
+
+                     <div class="stat-card">
+                     <div class="stat-icon">🏆</div>
+                           <h3>Top Category</h3>
+                            <div class="stat-value" id="topCategory">-</div>
+                                </div>
+             </div>
 
             <div class="charts-grid">
                 <div class="chart-container">
@@ -102,11 +105,25 @@
                         <option value="">All Types</option>
                         
                         <option value="incoming">Incoming Money</option>
-                        <option value="payment">Payments</option>
-                        <option value="transfer">Transfers</option>
-                        <option value="withdrawal">Withdrawals</option>
-                        <option value="airtime">Airtime</option>
-                        <option value="bundle">Data Bundle</option>
+
+                        <option value="payment">Payments to Code Holders</option>
+
+                        <option value="transfer">Transfers to Mobile Numbers</option>
+
+                        <option value="deposit">Bank Deposits</option>
+
+                        <option value="airtime">Airtime Bill Payments</option>
+
+                        <option value="cashpower">Cash Power Bill Payments</option>
+
+                        <option value="thirdparty">Transactions Initiated by Third Parties</option>
+
+                        <option value="withdrawal">Withdrawals from Agents</option>
+
+                        <option value="banktransfer">Bank Transfers</option>
+                        
+                        <option value="bundle">Internet and Voice Bundle Purchases</option>
+
 
                     </select>
                 </div>
@@ -192,7 +209,7 @@
                 <h2>Transaction Details</h2>
                 <div id="modalBody">
                     
-                    <!-- dynamic content will be inserted here -->
+                    <!-- dynamiccontent will be here -->
 
                 </div>
             </div>
@@ -230,7 +247,7 @@
             <div class="footer-bottom">
                 <div class="footer-bottom-content">
                     <div class="copyright">
-                        <p>&copy; © 2025 | Student Project– For educational use only. Not affiliated with MTN.</p>
+                        <p>&copy; © 2025 | Student Project Group 32– For educational use only. Not affiliated with MTN.</p>
                         <p class="footer-tagline">Everywhere you go</p>
                     </div>
                     <div class="footer-legal">
@@ -244,21 +261,26 @@
     </footer>
 
 
-    <script src="data.js"></script>
-    <script src="charts.js"></script>
-    <script src="app.js"></script>
-    
-    <script>
-    window.addEventListener('load', function() {
-        if (typeof Chart !== 'undefined') {
-            console.log('Chart.js loaded successfully');
-            if (typeof SMSDashboard !== 'undefined') {
-                dashboard = new SMSDashboard();
-            }
-        } else {
-            console.error('Chart.js failed to load');
-        }
-    });
-    </script>
+  <!-- Chart.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- load your s cripts in this order -->
+
+<script src="charts.js"></script>
+
+<script src="app.js"></script>
+
+<script src="data.js"></script>
+
+<script>
+window.addEventListener('load', function () {
+  if (typeof Chart !== 'undefined') {
+    console.log('✅ Chart.js loaded');
+  } else {
+    console.error('❌ Chart.js not loaded');
+  }
+});
+</script>
 </body>
 </html>

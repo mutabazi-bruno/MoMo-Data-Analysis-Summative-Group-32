@@ -1,249 +1,202 @@
-// static  Mock SMS Transaction Data we change it after getting api 
-const smsData = [
-    {
-        id: 1,
-        date: '2024-01-15',
-        type: 'incoming',
-        amount: 25000,
-        description: 'Received from John Doe',
-        details: 'Transaction ID: TX001. You have received 25000 RWF from John Doe.',
-        sender: 'John Doe',
-        phone: '250788123456'
-    },
-    {
-        id: 2,
-        date: '2024-01-16',
-        type: 'payment',
-        amount: 15000,
-        description: 'Payment to Jane Smith',
-        details: 'TxId: TX002. Your payment of 15000 RWF to Jane Smith has been completed.',
-        recipient: 'Jane Smith',
-        phone: '250788654321'
-    },
-    {
-        id: 3,
-        date: '2024-01-17',
-        type: 'airtime',
-        amount: 3000,
-        description: 'Airtime purchase',
-        details: 'Your airtime purchase of 3000 RWF has been completed. Fee: 50 RWF.',
-        fee: 50
-    },
-    {
-        id: 4,
-        date: '2024-01-18',
-        type: 'withdrawal',
-        amount: 50000,
-        description: 'Agent withdrawal',
-        details: 'You have withdrawn 50000 RWF via agent: Mary Agent (250123456789).',
-        agent: 'Mary Agent',
-        agentPhone: '250123456789'
-    },
-    {
-        id: 5,
-        date: '2024-01-19',
-        type: 'bundle',
-        amount: 2000,
-        description: 'Internet bundle 1GB',
-        details: 'You have purchased an internet bundle of 1GB for 2000 RWF valid for 30 days.',
-        bundle: '1GB',
-        validity: '30 days'
-    },
-    {
-        id: 6,
-        date: '2024-01-20',
-        type: 'transfer',
-        amount: 10000,
-        description: 'Transfer to 250788999888',
-        details: 'Your transfer of 10000 RWF to 250788999888 has been completed.',
-        recipient: '250788999888'
-    },
-    {
-        id: 7,
-        date: '2024-02-01',
-        type: 'incoming',
-        amount: 75000,
-        description: 'Received from Business Partner',
-        details: 'Transaction ID: TX007. You have received 75000 RWF from Business Partner.',
-        sender: 'Business Partner',
-        phone: '250788777666'
-    },
-    {
-        id: 8,
-        date: '2024-02-05',
-        type: 'payment',
-        amount: 5000,
-        description: 'Bill payment',
-        details: 'Your bill payment of 5000 RWF has been completed. Reference: BP001.',
-        reference: 'BP001'
-    },
-    {
-        id: 9,
-        date: '2024-02-10',
-        type: 'withdrawal',
-        amount: 30000,
-        description: 'Agent withdrawal',
-        details: 'You have withdrawn 30000 RWF via agent: Peter Agent (250111222333).',
-        agent: 'Peter Agent',
-        agentPhone: '250111222333'
-    },
-    {
-        id: 10,
-        date: '2024-02-15',
-        type: 'airtime',
-        amount: 5000,
-        description: 'Airtime purchase',
-        details: 'Your airtime purchase of 5000 RWF has been completed.',
-        fee: 0
-    },
-    {
-        id: 11,
-        date: '2024-03-01',
-        type: 'incoming',
-        amount: 120000,
-        description: 'Salary payment',
-        details: 'Transaction ID: TX011. You have received 120000 RWF salary payment.',
-        sender: 'Company ABC',
-        phone: '250788111222'
-    },
-    {
-        id: 12,
-        date: '2024-03-05',
-        type: 'transfer',
-        amount: 25000,
-        description: 'Transfer to family',
-        details: 'Your transfer of 25000 RWF to family member has been completed.',
-        recipient: 'Family Member'
-    },
-    {
-        id: 13,
-        date: '2024-03-10',
-        type: 'bundle',
-        amount: 8000,
-        description: 'Internet bundle 5GB',
-        details: 'You have purchased an internet bundle of 5GB for 8000 RWF valid for 30 days.',
-        bundle: '5GB',
-        validity: '30 days'
-    },
-    {
-        id: 14,
-        date: '2024-03-15',
-        type: 'payment',
-        amount: 35000,
-        description: 'Utility bill payment',
-        details: 'Your utility bill payment of 35000 RWF has been completed.',
-        utility: 'Electricity'
-    },
-    {
-        id: 15,
-        date: '2024-03-20',
-        type: 'withdrawal',
-        amount: 80000,
-        description: 'Agent withdrawal',
-        details: 'You have withdrawn 80000 RWF via agent: Susan Agent (250999888777).',
-        agent: 'Susan Agent',
-        agentPhone: '250999888777'
-    }
-];
+let smsData = [];
 
-const transactionTypes = {
-    incoming: 'Incoming Money',
-    payment: 'Payment',
-    transfer: 'Transfer',
-    withdrawal: 'Withdrawal',
-    airtime: 'Airtime',
-    bundle: 'Data Bundle'
-};
 
-const monthlyData = {
-    labels: ['Jan 2024', 'Feb 2024', 'Mar 2024'],
+let typeDistribution = {
+    labels: [],
     datasets: [{
-        label: 'Transaction Volume (RWF)',
-        data: [150000, 265000, 390000],
-        backgroundColor: '#fbbf24',
-        borderColor: '#1e3a8a',
-        borderWidth: 2
+        data: [],
+        backgroundColor: ['#1e3a8a', '#22c55e', '#f59e0b', '#ef4444', '#3b82f6', '#10b981', '#8b5cf6']
     }]
 };
 
-const typeDistribution = {
-    labels: ['Incoming Money', 'Payments', 'Transfers', 'Withdrawals', 'Airtime', 'Data Bundle'],
+let monthlyData = {
+    labels: [],
     datasets: [{
-        data: [220000, 55000, 35000, 160000, 8000, 10000],
-        backgroundColor: [
-            '#1e3a8a',
-            '#3b82f6',
-            '#fbbf24',
-            '#fcd34d',
-            '#0f172a',
-            '#64748b'
-        ]
+        label: 'Monthly Volume',
+        data: [],
+        backgroundColor: '#1e3a8a'
     }]
 };
 
-const dailyTrends = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-    datasets: [
-        {
-            label: 'Incoming',
-            data: [45000, 75000, 120000, 95000],
-            borderColor: '#1e3a8a',
-            backgroundColor: 'rgba(30, 58, 138, 0.1)',
-            tension: 0.4
-        },
-        {
-            label: 'Outgoing',
-            data: [30000, 40000, 85000, 65000],
-            borderColor: '#fbbf24',
-            backgroundColor: 'rgba(251, 191, 36, 0.1)',
-            tension: 0.4
+let dailyTrends = {
+    labels: [],
+    datasets: [{
+        label: 'Daily Volume',
+        data: [],
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        fill: true,
+        tension: 0.4
+    }]
+};
+
+let agentPerformance = {
+    labels: [],
+    datasets: [{
+        label: 'Agent Performance',
+        data: [],
+        backgroundColor: '#10b981'
+    }]
+};
+
+async function loadDataAndStartApp() {
+    try {
+        console.log("🔄 Loading data from API...");
+        
+    
+        const testResponse = await fetch("http://127.0.0.1:5000/api/test");
+        const testData = await testResponse.json();
+        console.log("📊 Database status:", testData);
+        
+        if (!testData.database_exists || testData.transaction_count === 0) {
+            console.warn("⚠️ No data in database or database doesn't exist");
+            showNoDataMessage();
+            return;
         }
-    ]
-};
+        
+        // Load actual transaction data
 
-const agentPerformance = {
-    labels: ['Mary Agent', 'Peter Agent', 'Susan Agent', 'Other Agents'],
-    datasets: [{
-        data: [50000, 30000, 80000, 45000],
-        backgroundColor: [
-            '#1e3a8a',
-            '#3b82f6',
-            '#fbbf24',
-            '#fcd34d'
-        ]
-    }]
-};
+        const response = await fetch("http://127.0.0.1:5000/api/transactions");
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        smsData = await response.json();
+        console.log("✅ Data loaded successfully:", smsData.length, "transactions");
+        
+        if (smsData.length === 0) {
+            showNoDataMessage();
+            return;
+        }
 
-function formatAmount(amount) {
-    return new Intl.NumberFormat('en-RW', {
-        style: 'currency',
-        currency: 'RWF',
-        minimumFractionDigits: 0
-    }).format(amount);
+    
+        computeAndRenderCharts(smsData);
+        
+
+        dashboard = new SMSDashboard(smsData);
+        
+        console.log("🎉 Dashboard initialized successfully!");
+
+    } catch (err) {
+        console.error("❌ Failed to load API data:", err);
+        showErrorMessage(err.message);
+    }
 }
 
-function formatDate(dateString) {
-    return new Date(dateString).toLocaleDateString('en-RW', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
+function showNoDataMessage() {
+    const container = document.querySelector('.container');
+    const noDataDiv = document.createElement('div');
+    noDataDiv.className = 'no-data-message';
+    noDataDiv.innerHTML = `
+        <div style="text-align: center; padding: 50px; background: #f8fafc; border-radius: 10px; margin: 20px;">
+            <h2>📭 No Data Available</h2>
+            <p>No transactions found in the database.</p>
+            <p>Please make sure:</p>
+            <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
+                <li>Your SMS XML file has been processed</li>
+                <li>The Python script (momo.py) has been run</li>
+                <li>The database contains transaction data</li>
+            </ul>
+        </div>
+    `;
+    container.appendChild(noDataDiv);
+}
+
+function showErrorMessage(error) {
+    const container = document.querySelector('.container');
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.innerHTML = `
+        <div style="text-align: center; padding: 50px; background: #fef2f2; border: 2px solid #fecaca; border-radius: 10px; margin: 20px;">
+            <h2>❌ Error Loading Data</h2>
+            <p><strong>Error:</strong> ${error}</p>
+            <p>Please check:</p>
+            <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
+                <li>Flask API server is running (python api.py)</li>
+                <li>Server is accessible at http://127.0.0.1:5000</li>
+                <li>Database file exists and is accessible</li>
+                <li>CORS issues (try running from a local server)</li>
+            </ul>
+        </div>
+    `;
+    container.appendChild(errorDiv);
+}
+
+function computeAndRenderCharts(data) {
+    console.log("📈 Computing chart data...");
+    
+ 
+    const typeMap = {};
+    const monthlyMap = {};
+    const dailyMap = {};
+    const agentMap = {};
+
+    data.forEach(tx => {
+        try {
+            const date = new Date(tx.date);
+            const month = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+            const day = date.toISOString().split("T")[0];
+
+            const type = tx.transaction_type || 'Unknown';
+
+            typeMap[type] = (typeMap[type] || 0) + 1;
+
+    
+            monthlyMap[month] = (monthlyMap[month] || 0) + (tx.amount || 0);
+
+            dailyMap[day] = (dailyMap[day] || 0) + (tx.amount || 0);
+
+            if (type.toLowerCase().includes("agent") || type.toLowerCase().includes("withdrawal")) {
+                const agentName = tx.party || "Unknown Agent";
+                agentMap[agentName] = (agentMap[agentName] || 0) + (tx.amount || 0);
+            }
+        } catch (error) {
+            console.warn("Error processing transaction:", tx, error);
+        }
     });
+
+    typeDistribution.labels = Object.keys(typeMap);
+
+    typeDistribution.datasets[0].data = Object.values(typeMap);
+
+    monthlyData.labels = Object.keys(monthlyMap).sort();
+
+    monthlyData.datasets[0].data = monthlyData.labels.map(month => monthlyMap[month]);
+
+    const sortedDays = Object.keys(dailyMap).sort().slice(-30);
+
+    dailyTrends.labels = sortedDays;
+
+    dailyTrends.datasets[0].data = sortedDays.map(day => dailyMap[day]);
+
+
+    const sortedAgents = Object.entries(agentMap)
+
+        .sort(([,a], [,b]) => b - a)
+
+        .slice(0, 10);
+    
+    agentPerformance.labels = sortedAgents.map(([name]) => name);
+    agentPerformance.datasets[0].data = sortedAgents.map(([,amount]) => amount);
+
+    console.log("✅ Chart data computed successfully");
+    console.log("Types:", typeDistribution.labels);
+    console.log("Months:", monthlyData.labels);
+    console.log("Agents:", agentPerformance.labels);
 }
 
-function getTransactionsByType(type) {
-    return smsData.filter(transaction => transaction.type === type);
-}
+document.addEventListener("DOMContentLoaded", function() {
 
-function getTransactionsByDateRange(startDate, endDate) {
-    return smsData.filter(transaction => {
-        const txDate = new Date(transaction.date);
-        return txDate >= new Date(startDate) && txDate <= new Date(endDate);
-    });
-}
+    console.log("🚀 DOM loaded, starting application...");
 
-function searchTransactions(query) {
-    return smsData.filter(transaction => 
-        transaction.description.toLowerCase().includes(query.toLowerCase()) ||
-        transaction.details.toLowerCase().includes(query.toLowerCase())
-    );
-}
+    loadDataAndStartApp();
+});
+
+
+window.addEventListener("load", function() {
+    if (!dashboard) {
+        console.log("🔄 Retrying from window load...");
+        loadDataAndStartApp();
+    }
+});

@@ -1,120 +1,137 @@
 import xml.etree.ElementTree as ET
 import re
 from datetime import datetime
+import sqlite3
+import os
 
-#categorize sms into types
+# this code make sure the db file and logs stays in this forder i dont know why it was saving them out of the forder
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+#  message
+
 def categorize_of_message(message):
-    msg = message.lower()  
+    msg = message.lower()
 
-    if "You have received" in msg and "from" in msg:
-
+    if "you have received" in msg and "from" in msg:
         return "Incoming Money"
-    
-    elif "Your payment of" in msg and "to" in msg:
-
+    elif "your payment of" in msg and "to" in msg:
         return "Payments to Code Holders"
-    
-    elif "Withdrawn" in msg and "agent" in msg:
-
+    elif "withdrawn" in msg and "agent" in msg:
         return "Withdrawals from Agents"
-    
-    elif "Bank deposit" in msg:
-
+    elif "bank deposit" in msg:
         return "Bank Deposits"
-    
-    elif "Airtime" in msg:
-
+    elif "airtime" in msg:
         return "Airtime Bill Payments"
-    
-    elif "Cash power" in msg:
-
+    elif "cash power" in msg:
         return "Cash Power Bill Payments"
-    
-    elif "Purchased an internet bundle" in msg or "voice bundle" in msg:
-
+    elif "purchased an internet bundle" in msg or "voice bundle" in msg:
         return "Internet and Voice Bundle Purchases"
-    
-    elif "Third party" in msg:
-
+    elif "third party" in msg:
         return "Transactions by Third Parties"
-    
-    elif "Bank transfer" in msg:
-
+    elif "bank transfer" in msg:
         return "Bank Transfers"
-    
-    elif "Transfer to" in msg or "sent to" in msg:
-
+    elif "transfer to" in msg or "sent to" in msg:
         return "Transfers to Mobile Numbers"
-    
     else:
-
         return "Uncategorized"
 
-# exctractions
+# extract amount
+
+
 def amount_extracted(message):
-
     match = re.search(r'([\d,]+)\s*RWF', message)
-
     if match:
-
         return int(match.group(1).replace(',', ''))
-    
     return None
+
+# Extact date
 
 def date_extracted(message):
-
     match = re.search(r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})', message)
-
     if match:
-
         try:
-
             return datetime.strptime(match.group(1), '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
-        
         except ValueError:
-
             return None
-        
     return None
+
+# extract transaction ID-
+
 
 def extract_id_transaction(message):
-
     match = re.search(r'TxId[:\-]?\s*(\d+)', message, re.IGNORECASE)
-
     if match:
-
         return match.group(1)
-    
     return None
 
-# xml file  for parsing
-tree = ET.parse('modified_sms_v2.xml')
-root = tree.getroot()
+# Create DB and table if not exists we have database_startup.py which also create database manual but we had to add this to make this codes complete 
 
-# adding a logging file 
-log_file = open("unprocessing_messages.log", "w", encoding="utf-8")
+def create_db():
+    db_path = os.path.join(BASE_DIR, "mobilemoney.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS transactions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            tx_type TEXT,
+            amount INTEGER,
+            tx_id TEXT,
+            datetime TEXT,
+            body TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
 
-# Process and clean each SMS
-for sms in root.findall('sms'):
-    message = sms.attrib.get('body')
+# Insert a valid transaction into the DB
 
-    category = categorize_of_message(message)
-    amount = amount_extracted(message)
-    date = date_extracted(message)
-    tx_id = extract_id_transaction(message)
+def insert_transaction(tx_type, amount, tx_id, date, message):
+    db_path = os.path.join(BASE_DIR, "mobilemoney.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO transactions (tx_type, amount, tx_id, datetime, body)
+        VALUES (?, ?, ?, ?, ?)
+    """, (tx_type, amount, tx_id, date, message))
+    conn.commit()
+    conn.close()
 
-    if category == "Uncategorized":
-        log_file.write(f"Unprocessed Message: {message}\n")
-        log_file.write("-" * 60 + "\n")
-        continue 
+def process_sms(xml_filename):
+    xml_path = os.path.join(BASE_DIR, xml_filename)
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
 
-    # Processed output 
-    print(f"Type: {category}")
-    print(f"Amount: {amount}")
-    print(f"Date: {date}")
-    print(f"Transaction ID: {tx_id}")
-    print(f"Message: {message}")
-    print("-" * 60)
+    log_path = os.path.join(BASE_DIR, "unprocessing_messages.log")
+    log_file = open(log_path, "w", encoding="utf-8")
 
-# log file closed
-log_file.close()
+    print(" Total messages found:", len(root.findall("sms")))
+
+    for sms in root.findall('sms'):
+        message = sms.attrib.get('body')
+        if not message:
+            continue
+
+        category = categorize_of_message(message)
+        amount = amount_extracted(message)
+        date = date_extracted(message)
+        tx_id = extract_id_transaction(message)
+
+        if category == "Uncategorized" or not amount or not date:
+            log_file.write(f"Unprocessed Message: {message}\n")
+            log_file.write("-" * 60 + "\n")
+            continue
+
+        insert_transaction(category, amount, tx_id, date, message)
+
+        print(f" Saved: {category} | {amount} RWF | {date}")
+
+    log_file.close()
+    print(" Done parsing and saving messages.")
+
+# Entry point (I had to copy path even though , modifield sms and momo.py are in same forder)
+
+if __name__ == "__main__":
+    create_db()
+    process_sms("D:\HTML LG\MOMO\MoMo-Data-Analysis-Summative-Group-32\modified_sms_v2.xml")

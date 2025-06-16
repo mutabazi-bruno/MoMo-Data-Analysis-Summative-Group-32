@@ -114,8 +114,10 @@ Specific parsing error
 
 
 👥 Team Contributions
-Name    Role    Key Contributions
+Name    Role    Key Contributions<br>
+
 Heroine  Backend Engineer    Flask API, data processing
+
 Bruno&Anitha    Frontend Developer  Dashboard UI, Chart.js integration
 Maxime Database Architect  Schema design, query optimization
 📽️ Video Walkthrough
